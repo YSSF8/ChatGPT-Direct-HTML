@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ChatGPT Direct-HTML
-// @version      1.0
+// @version      1.1
 // @description  Allows you to execute HTML code within ChatGPT directly
 // @author       YSSF
 // @match        https://chat.openai.com/*
@@ -51,6 +51,7 @@
             setTimeout(() => {
                 expanded.style.bottom = `${checkButton.offsetHeight + 15}px`;
                 expanded.style.opacity = 1;
+                expanded.scrollTop = expanded.scrollHeight;
             });
 
             const htmlSnippets = document.querySelectorAll('.language-html');
@@ -204,6 +205,8 @@
     }
 
     .yssf-expanded {
+        max-height: 2.5in;
+        overflow: auto;
         transition: 200ms;
         transition-property: bottom, opacity;
     }

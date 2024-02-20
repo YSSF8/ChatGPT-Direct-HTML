@@ -19,6 +19,7 @@ The UserScript adds a button labeled "Check for HTML snippets" to the ChatGPT in
 - **HTML Snippet Detection**: Scans the chat for HTML snippets.
 - **HTML Snippet Preview**: Allows users to preview HTML snippets in a separate, sandboxed iframe.
 - **Freely executing codes for comparison**: You can freely execute lots of codes, get lots of popups to compare them to each other.
+- **Highlighting**: Hover over a snippet in the snippet finder, its original reference will be highlighted.
 
 ## Authorship
 

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ChatGPT Direct-HTML
-// @version      1.1
+// @version      1.2
 // @description  Allows you to execute HTML code within ChatGPT directly
 // @author       YSSF
 // @match        https://chat.openai.com/*
@@ -137,6 +137,24 @@
                         setTimeout(() => expanded.remove(), 200);
                         isExpanded = false;
                     });
+
+                    expandedButton.addEventListener('mouseover', () => {
+                        let snippetRect = snippet.getBoundingClientRect();
+
+                        const preview = document.createElement('div');
+                        preview.classList.add('yssf-preview');
+                        preview.style.left = `${snippetRect.left}px`;
+                        preview.style.top = `${snippetRect.top}px`;
+                        preview.style.width = `${snippetRect.width}px`;
+                        preview.style.height = `${snippetRect.height}px`;
+                        document.body.appendChild(preview);
+                    });
+
+                    document.body.addEventListener('mouseout', e => {
+                        if (!expandedButton.contains(e.relatedTarget)) {
+                            document.querySelectorAll('.yssf-preview').forEach(prev => prev.remove());
+                        }
+                    });
                 });
             }
         } else {
@@ -167,13 +185,14 @@
         width: 6in;
         height: 3in;
         opacity: 0;
+        z-index: 999999;
         transition: 200ms;
         transition-property: opacity, transform;
     }
 
     .yssf-iframe-content iframe {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 25px);
     }
 
     .yssf-iframe-content .header {
@@ -204,11 +223,20 @@
         background-color: #cc3f35;
     }
 
+    .yssf-iframe-content .header .close:active {
+        background-color: #9e2820;
+    }
+
     .yssf-expanded {
         max-height: 2.5in;
         overflow: auto;
         transition: 200ms;
         transition-property: bottom, opacity;
+    }
+
+    .yssf-preview {
+        background-color: rgba(138, 180, 248, .3);
+        position: fixed;
     }
     `);
 })();

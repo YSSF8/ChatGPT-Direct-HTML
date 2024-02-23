@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ChatGPT Direct-HTML
-// @version      1.2
+// @version      1.3
 // @description  Allows you to execute HTML code within ChatGPT directly
 // @author       YSSF
 // @match        https://chat.openai.com/*
@@ -100,9 +100,11 @@
                         let initialX, initialY;
 
                         iframeHeader.addEventListener('mousedown', e => {
-                            isDragging = true;
-                            initialX = e.clientX - iframeContent.offsetLeft;
-                            initialY = e.clientY - iframeContent.offsetTop;
+                            if (e.target == iframeHeader) {
+                                isDragging = true;
+                                initialX = e.clientX - iframeContent.offsetLeft;
+                                initialY = e.clientY - iframeContent.offsetTop;
+                            }
                         });
 
                         document.addEventListener('mousemove', e => {
@@ -182,6 +184,7 @@
         resize: both;
         min-width: 230px;
         min-height: 90px;
+        box-shadow: 0 0 6px #000;
         width: 6in;
         height: 3in;
         opacity: 0;
@@ -201,6 +204,7 @@
         align-items: center;
         background-color: #171717;
         padding: 7px;
+        z-index: 1;
     }
 
     .yssf-iframe-content .header .title {
@@ -216,14 +220,34 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        position: relative;
+        user-select: none;
+        z-index: 2;
         transition: background 200ms;
     }
 
-    .yssf-iframe-content .header .close:hover {
+    .yssf-iframe-content .header .close::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(.7);
+        opacity: 0;
         background-color: #cc3f35;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        z-index: -1;
+        transition: 300ms;
+        transition-property: background, transform, opacity;
     }
 
-    .yssf-iframe-content .header .close:active {
+    .yssf-iframe-content .header .close:hover::before {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    .yssf-iframe-content .header .close:active::before {
         background-color: #9e2820;
     }
 

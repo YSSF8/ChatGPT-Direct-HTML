@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ChatGPT Direct-HTML
-// @version      1.3
+// @version      1.4
 // @description  Allows you to execute HTML code within ChatGPT directly
 // @author       YSSF
 // @match        https://chat.openai.com/*
@@ -55,6 +55,7 @@
             });
 
             const htmlSnippets = document.querySelectorAll('.language-html');
+            let snippetCount = {}
 
             if (htmlSnippets.length == 0) {
                 expanded.textContent = 'No HTML snippets found!';
@@ -69,11 +70,12 @@
                     } catch {
                         parsedTitle = 'Unnamed';
                     }
+                    snippetCount[parsedTitle] = (snippetCount[parsedTitle] || 0) + 1;
 
                     const expandedButton = document.createElement('a');
                     expandedButton.setAttribute('as', 'button');
                     expandedButton.className = 'flex gap-2 rounded p-2.5 text-sm cursor-pointer focus:ring-0 radix-disabled:pointer-events-none radix-disabled:opacity-50 group items-center hover:bg-token-sidebar-surface-secondary';
-                    expandedButton.innerHTML = parsedTitle;
+                    expandedButton.innerHTML = snippetCount[parsedTitle] <= 1 ? parsedTitle : `${parsedTitle} (${snippetCount[parsedTitle] - 1})`;
                     expandedButton.title = index + 1;
                     expanded.appendChild(expandedButton);
 
@@ -195,7 +197,7 @@
 
     .yssf-iframe-content iframe {
         width: 100%;
-        height: calc(100% - 25px);
+        height: calc(100% - 30px);
     }
 
     .yssf-iframe-content .header {
@@ -210,6 +212,9 @@
     .yssf-iframe-content .header .title {
         pointer-events: none;
         user-select: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .yssf-iframe-content .header .close {

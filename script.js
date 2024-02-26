@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         ChatGPT Direct-HTML
-// @version      1.4
+// @version      1.5
 // @description  Allows you to execute HTML code within ChatGPT directly
 // @author       YSSF
 // @match        https://chat.openai.com/*
@@ -87,6 +87,7 @@
                             <div class="title">${parsedTitle}</div>
                             <div class="close">&times;</div>
                         </div>
+                        <div class="body"></div>
                         `;
                         document.body.appendChild(iframeContent);
 
@@ -129,7 +130,7 @@
                         });
 
                         const iframe = document.createElement('iframe');
-                        iframeContent.appendChild(iframe);
+                        iframeContent.querySelector('.body').appendChild(iframe);
 
                         let iframeDoc = iframe.contentDocument;
                         iframeDoc.open();
@@ -180,7 +181,7 @@
         left: 50%;
         top: 50%;
         border-radius: 8px;
-        border: 1px solid var(--border-heavy);
+        border: 1.5px solid var(--border-heavy);
         overflow: hidden;
         transform: translate(-50%, -50%) scale(.8);
         resize: both;
@@ -197,7 +198,10 @@
 
     .yssf-iframe-content iframe {
         width: 100%;
-        height: calc(100% - 30px);
+        height: calc(100% - 2.5rem);
+        border: 1px solid hsl(0deg, 0%, 100%, 10%);
+        border-radius: 8px;
+        overflow: auto;
     }
 
     .yssf-iframe-content .header {
@@ -205,6 +209,7 @@
         justify-content: space-between;
         align-items: center;
         background-color: #171717;
+        border-bottom: 1px solid hsl(0deg, 0%, 100%, 10%);
         padding: 7px;
         z-index: 1;
     }
@@ -254,6 +259,13 @@
 
     .yssf-iframe-content .header .close:active::before {
         background-color: #9e2820;
+    }
+
+    .yssf-iframe-content .body {
+        height: 100%;
+        width: 100%;
+        padding: 8px;
+        background-color: #151515;
     }
 
     .yssf-expanded {
